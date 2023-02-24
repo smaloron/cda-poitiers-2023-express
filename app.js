@@ -3,15 +3,14 @@ const dotenv = require('dotenv');
 // chargement des variables du fichier .env dans process.env
 dotenv.config();
 
+// Import de jsonwebtoken
+const jwt = require('jsonwebtoken');
+
 // Import du module express
-const { response } = require('express');
 const express = require('express');
 
 // Import des midddlewares perso
 const customMiddlewares = require('./middlewares/custom-middlewares');
-
-// Import des contrôleurs
-const defaulControlers = require('./controllers/default-controllers');
 
 // Création de l'application
 const app = express();
@@ -19,6 +18,9 @@ const app = express();
 // Import du module morgan pour loguer les requêtes
 // et utilisation de ce module dans un middleware
 app.use(require('morgan')('tiny'));
+
+// Import des contrôleurs
+const defaulControlers = require('./controllers/default-controllers');
 
 // Gestion des ressources statiques
 app.use('/img', express.static('images'));
@@ -35,14 +37,8 @@ app.use(express.json());
 // Récupération depuis formulaire web ou Postman
 app.use(express.urlencoded({ extended: true }));
 
-// Définition d'une route
-app.get('/hello/:name', defaulControlers.hello);
-
-app.get('/addition/:n1([0-9]+)/:n2([0-9]+)', defaulControlers.add);
-/**
- * test de la réception de données postées
- */
-app.post('/test', defaulControlers.test);
+// Route externe
+app.use(require('./routes/default-routes'));
 
 // Dernière route qui capture toute route non encore capturée
 app.all('*', defaulControlers.notFound);
