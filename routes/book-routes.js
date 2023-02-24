@@ -29,5 +29,12 @@ router.put('/:id', async (req, res) => {
     res.json({ book: data });
 });
 
+// Suppression
+router.delete('/:id', async (req, res) => {
+    const book = await Book.model.findById(req.params.id);
+    await book.remove();
+    res.redirect('/book');
+});
+
 
 module.exports = router;
