@@ -3,6 +3,9 @@ const dotenv = require('dotenv');
 // chargement des variables du fichier .env dans process.env
 dotenv.config();
 
+// Import de mongoose
+const mongoose = require('mongoose');
+
 // Import de jsonwebtoken
 const jwt = require('jsonwebtoken');
 
@@ -46,4 +49,14 @@ app.all('*', defaultControlers.notFound);
 
 
 // lancement du serveur
-app.listen(process.env.EXPRESS_PORT, () => console.log('serveur en cours'));
+mongoose.set('strictQuery', false);
+mongoose.connect(process.env.MONGODB_URL,
+    {
+        useNewUrlParser: true,
+        dbName: 'express'
+    }
+)
+    .then(() => {
+        app.listen(process.env.EXPRESS_PORT, () => console.log('serveur en cours'));
+    })
+    .catch((err) => console.log(err));
