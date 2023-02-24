@@ -10,6 +10,9 @@ const express = require('express');
 // Import des midddlewares perso
 const customMiddlewares = require('./middlewares/custom-middlewares');
 
+// Import des contrôleurs
+const defaulControlers = require('./controllers/default-controllers');
+
 // Création de l'application
 const app = express();
 
@@ -33,32 +36,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Définition d'une route
-app.get('/hello/:name', function (request, response) {
-    response.json({
-        message: `hello ${request.params.name}`,
-        date: request.now
-    });
-});
+app.get('/hello/:name', defaulControlers.hello);
 
-app.get('/addition/:n1([0-9]+)/:n2([0-9]+)', function (req, res) {
-    res.json({
-        resultat: parseInt(req.params.n1) + parseInt(req.params.n2),
-        date: req.now
-    });
-});
+app.get('/addition/:n1([0-9]+)/:n2([0-9]+)', defaulControlers.add);
 /**
  * test de la réception de données postées
  */
-app.post('/test', (req, res) => {
-    res.json({
-        data: req.body
-    });
-});
+app.post('/test', defaulControlers.test);
 
 // Dernière route qui capture toute route non encore capturée
-app.all('*', (req, res) => {
-    res.status(404).json({ message: 'ressource introuvable' });
-});
+app.all('*', defaulControlers.notFound);
 
 
 // lancement du serveur
