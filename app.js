@@ -23,6 +23,15 @@ app.use((req, res, next) => {
     next();
 });
 
+// Sécurisation des routes /test avec un clef d'API
+app.use('/test*', (req, res, next) => {
+    if (req.query.KEY && req.query.KEY === '123') {
+        next();
+    } else {
+        res.status(403).json({ message: 'Non autorisé' });
+    }
+});
+
 // Gestion des données postées dans la requête HTTP
 // Récupération depuis un appel ajax (ex: axios)
 app.use(express.json());
