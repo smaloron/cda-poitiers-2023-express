@@ -7,6 +7,9 @@ dotenv.config();
 const { response } = require('express');
 const express = require('express');
 
+// Import des midddlewares perso
+const customMiddlewares = require('./middlewares/custom-middlewares');
+
 // Création de l'application
 const app = express();
 
@@ -18,19 +21,10 @@ app.use(require('morgan')('tiny'));
 app.use('/img', express.static('images'));
 
 // Middleware perso
-app.use((req, res, next) => {
-    req.now = new Date().toLocaleDateString();
-    next();
-});
+app.use(customMiddlewares.date);
 
 // Sécurisation des routes /test avec un clef d'API
-app.use('/test*', (req, res, next) => {
-    if (req.query.KEY && req.query.KEY === '123') {
-        next();
-    } else {
-        res.status(403).json({ message: 'Non autorisé' });
-    }
-});
+app.use('/test*', customMiddlewares.api);
 
 // Gestion des données postées dans la requête HTTP
 // Récupération depuis un appel ajax (ex: axios)
