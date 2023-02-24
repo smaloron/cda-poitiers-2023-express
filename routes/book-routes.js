@@ -3,9 +3,13 @@ const Book = require('../models/book-model');
 
 // Insertion de données
 router.post('/', async (req, res) => {
-    const book = new Book.model(req.body);
-    await book.save();
-    res.json({ newBook: book });
+    try {
+        const book = new Book.model(req.body);
+        await book.save();
+        res.json({ newBook: book });
+    } catch (error) {
+        res.status(500).json(error)
+    }
 });
 
 // Affichage de toutes les données
