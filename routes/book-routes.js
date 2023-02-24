@@ -20,5 +20,14 @@ router.get('/:id', async (req, res) => {
     res.json({ book: data });
 });
 
+// Modification d'un livre
+router.put('/:id', async (req, res) => {
+    const data = await Book.model.updateOne(
+        { _id: req.params.id },
+        req.body
+    );
+    res.json({ book: data });
+});
+
 
 module.exports = router;
