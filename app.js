@@ -44,6 +44,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(require('./routes/default-routes'));
 app.use('/secure', require('./routes/secure-routes'));
 app.use('/book', require('./routes/book-routes'));
+app.use(require('./routes/auth-routes'));
 
 // Dernière route qui capture toute route non encore capturée
 app.all('*', defaultControlers.notFound);
