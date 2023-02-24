@@ -1,7 +1,15 @@
+// Import de jsonwebtoken
+const jwt = require('jsonwebtoken');
 function hello (request, response) {
+    const token = jwt.sign(
+        { message: 'chuuut' },
+        process.env.SECRET,
+        { expiresIn: '25 minutes' }
+    );
     response.json({
         message: `hello ${request.params.name}`,
-        date: request.now
+        date: request.now,
+        token
     });
 }
 

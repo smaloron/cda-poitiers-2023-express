@@ -20,7 +20,7 @@ const app = express();
 app.use(require('morgan')('tiny'));
 
 // Import des contrôleurs
-const defaulControlers = require('./controllers/default-controllers');
+const defaultControlers = require('./controllers/default-controllers');
 
 // Gestion des ressources statiques
 app.use('/img', express.static('images'));
@@ -39,9 +39,10 @@ app.use(express.urlencoded({ extended: true }));
 
 // Route externe
 app.use(require('./routes/default-routes'));
+app.use('/secure', require('./routes/secure-routes'));
 
 // Dernière route qui capture toute route non encore capturée
-app.all('*', defaulControlers.notFound);
+app.all('*', defaultControlers.notFound);
 
 
 // lancement du serveur
